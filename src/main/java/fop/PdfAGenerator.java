@@ -1,29 +1,18 @@
 package fop;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.xmlgraphics.util.MimeConstants;
 import org.xml.sax.SAXException;
+
+import javax.xml.transform.*;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PdfAGenerator {
 	private static final String FOP_FO_FILE = "helloworld.fo";
@@ -39,17 +28,20 @@ public class PdfAGenerator {
 		Properties prop = new Properties();
 		InputStream is = new FileInputStream(classLoader.getResource(CONFIG_PROPERTIES).getFile());
 		prop.load(is);
-		
+
 		FopFactory fopFactory = FopFactory.newInstance(configFile);
 		String outputFile = prop.getProperty("OUTPUT_PATH") + File.separator + "myfile.pdf";
 		OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(outputFile)));
 		
 		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 		foUserAgent.setAccessibility(true);
-		foUserAgent.getRendererOptions().put("pdf-a-mode", "PDF/A-3u");
-		
+		foUserAgent.getRendererOptions().put("pdf-a-mode", "PDF/A-3b");
+		foUserAgent.getRendererOptions().put("version", "1.4");
+		foUserAgent.setAuthor("Author 1");
+
 		try {
 			Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
+
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
 			Source src = new StreamSource(classLoader.getResource(FOP_FO_FILE).getFile());

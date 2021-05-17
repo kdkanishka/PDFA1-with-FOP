@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="Arial" font-weight="normal" font-style="normal">
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" xmlns:pdf="http://xmlgraphics.apache.org/fop/extensions/pdf"  font-family="Arial" font-weight="normal" font-style="normal">
   <fo:layout-master-set>
     <fo:simple-page-master master-name="simpleA4" page-height="29.7cm" page-width="21cm" margin-top="2cm" margin-bottom="2cm" margin-left="2cm" margin-right="2cm">
       <fo:region-body/>
     </fo:simple-page-master>
   </fo:layout-master-set>
+
+    <fo:declarations>
+      <pdf:embedded-file filename="logo.jpg" src="url(file:///home/kanishka/Downloads/fop-pdf/logo.jpg)" description="Java Logo"/>
+      <pdf:embedded-file src="url(file:///home/kanishka/Downloads/fop-pdf/invoice.xml)"/>
+    </fo:declarations>
+
   <fo:page-sequence master-reference="simpleA4">
     <fo:flow flow-name="xsl-region-body">
       <fo:block>Hello World!</fo:block>
